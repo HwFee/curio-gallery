@@ -21,21 +21,25 @@ fi
 log() { echo "[deploy] $*"; }
 
 log "更新软件源..."
-apt-get update -y
+apt-get update -y --fix-missing
 
 log "安装基础依赖..."
-apt-get install -y curl gnupg ca-certificates git debian-keyring debian-archive-keyring apt-transport-https
+apt-get install -y --fix-missing curl gnupg ca-certificates git debian-keyring debian-archive-keyring apt-transport-https
+
+log "配置 npm 官方源..."
+npm config set registry https://registry.npmjs.org/
 
 log "安装 Node.js 24..."
 if ! command -v node >/dev/null 2>&1 || [ "$(node -v | cut -d'v' -f2 | cut -d'.' -f1)" != "24" ]; then
   curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
-  apt-get install -y nodejs
+  apt-get install -y --fix-missing nodejs
 fi
 node -v
 
 log "安装 pnpm..."
 if ! command -v pnpm >/dev/null 2>&1; then
   npm install -g pnpm
+  pnpm config set registry https://registry.npmjs.org/
 fi
 pnpm -v
 
@@ -43,8 +47,8 @@ log "安装 Caddy..."
 if ! command -v caddy >/dev/null 2>&1; then
   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
-  apt-get update -y
-  apt-get install -y caddy
+  apt-get update -y --fix-missing
+  apt-get install -y --fix-missing caddy
 fi
 caddy version
 
