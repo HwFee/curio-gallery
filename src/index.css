@@ -1,3 +1,7 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/instrument-sans/wght.css';
+@import '@fontsource-variable/instrument-sans/wght-italic.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,7 +82,7 @@
   body {
     background-color: hsl(var(--ink));
     color: hsl(var(--cream));
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -103,7 +107,7 @@
 
 @layer utilities {
   .font-display {
-    font-family: 'Fraunces', Georgia, serif;
+    font-family: 'Fraunces Variable', Georgia, serif;
     font-variation-settings: 'opsz' 144;
   }
   .text-outline {
@@ -180,7 +184,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Fraunces', ui-serif, Georgia, serif;
+  font-family: 'Fraunces Variable', ui-serif, Georgia, serif;
   font-style: italic;
   font-weight: 300;
   font-size: 1.6rem;

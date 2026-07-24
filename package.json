@@ -11,6 +11,8 @@
     "optimize:images": "oxipng -o 4 --strip safe public/gallery/*.png && imagemin \"public/gallery/*.{jpg,jpeg}\" --out-dir=public/gallery --plugin=jpegtran"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",

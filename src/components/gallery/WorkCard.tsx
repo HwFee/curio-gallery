@@ -63,6 +63,7 @@ export default function WorkCard({ work, index = 0, onOpen, className = '', styl
         src={work.image}
         alt={work.title}
         loading={index > 3 ? 'lazy' : 'eager'}
+        decoding="async"
         onLoad={() => setLoaded(true)}
         className={`h-full w-full object-cover transition-[opacity,transform] duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06] ${
           loaded ? 'opacity-100' : 'opacity-0'

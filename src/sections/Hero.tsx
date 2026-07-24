@@ -72,6 +72,8 @@ export default function Hero({ featured, onOpen }: { featured: Work; onOpen: (el
               data-hero-img
               src={featured.image}
               alt={featured.title}
+              decoding="async"
+              fetchPriority="high"
               className="h-full w-full object-cover"
               draggable={false}
             />
