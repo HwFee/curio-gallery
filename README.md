@@ -8,13 +8,22 @@
 
 ### 方式一：直接 curl 执行（推荐）
 
-在境外 VPS 上以 root 执行：
+在境外 VPS 上以普通用户登录（例如 `oath`），用 `sudo` 执行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | bash
+curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | sudo bash
 ```
 
 默认监听 `80` 端口，访问 `http://<服务器IP>` 即可。
+
+> 注意：必须用 `| sudo bash`，不能写 `sudo curl ... | bash`（后者只给 curl 提了权）。
+
+或者先下载脚本再执行，更稳：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh -o deploy.sh
+sudo bash deploy.sh
+```
 
 ### 方式二：clone 后执行
 

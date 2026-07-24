@@ -2,11 +2,11 @@
 set -e
 
 # Curio Gallery 一键部署脚本
-# 在境外 VPS/虚拟机（Ubuntu/Debian）上以 root 身份运行：
-#   curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | bash
-# 或先 clone 再执行：
-#   git clone https://github.com/HwFee/curio-gallery.git
-#   cd curio-gallery && sudo bash deploy.sh
+# 在境外 VPS/虚拟机（Ubuntu/Debian）上以 sudo 身份运行：
+#   curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | sudo bash
+# 或先下载再执行（推荐，避免管道 sudo 的坑）：
+#   curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh -o deploy.sh
+#   sudo bash deploy.sh
 
 REPO_URL="https://github.com/HwFee/curio-gallery.git"
 INSTALL_DIR="/var/www/curio-gallery"
