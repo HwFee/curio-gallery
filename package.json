@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize:images": "oxipng -o 4 --strip safe public/gallery/*.png && imagemin \"public/gallery/*.{jpg,jpeg}\" --out-dir=public/gallery --plugin=jpegtran"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -75,6 +76,8 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "imagemin-cli": "^8.0.0",
+    "imagemin-jpegtran": "^8.0.0",
     "kimi-plugin-inspect-react": "^1.0.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",

@@ -1,6 +1,17 @@
 import { useRef, useState } from 'react'
 import type { Work } from '@/types/work'
 
+const ROMAN: ReadonlyArray<readonly [number, string]> = [
+  [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+  [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+]
+
+function toRoman(n: number): string {
+  let out = ''
+  for (const [v, s] of ROMAN) while (n >= v) { out += s; n -= v }
+  return out
+}
+
 interface Props {
   work: Work
   index?: number
@@ -9,7 +20,7 @@ interface Props {
   style?: React.CSSProperties
 }
 
-/** Gallery card — 3D tilt, golden sheen on hover, blur-up image reveal. */
+/** Gallery card — 3D tilt, golden sheen on hover, "developing plate" loading state. */
 export default function WorkCard({ work, index = 0, onOpen, className = '', style }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState(false)
@@ -39,21 +50,22 @@ export default function WorkCard({ work, index = 0, onOpen, className = '', styl
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       onClick={() => ref.current && onOpen?.(ref.current)}
-      className={`group relative select-none overflow-hidden rounded-[2px] bg-[hsl(var(--ink-soft))] transition-[box-shadow] duration-500 will-change-transform hover:shadow-[0_30px_80px_-20px_hsl(224_34%_4%/0.9),0_0_0_1px_hsl(var(--gold)/0.35)] ${className}`}
+      className={`group relative select-none overflow-hidden rounded-[2px] bg-[hsl(var(--ink-soft))] transition-[box-shadow] duration-500 hover:will-change-transform hover:shadow-[0_30px_80px_-20px_hsl(224_34%_4%/0.9),0_0_0_1px_hsl(var(--gold)/0.35)] ${className}`}
       style={{ transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease', ...style }}
     >
-      {/* blurred placeholder layer */}
-      <div
-        className="absolute inset-0 scale-110 bg-cover bg-center blur-2xl transition-opacity duration-700"
-        style={{ backgroundImage: `url(${work.image})`, opacity: loaded ? 0 : 0.5 }}
-      />
+      {/* "developing plate" placeholder — a covered canvas until the image arrives */}
+      {!loaded && (
+        <div className="plate grain" aria-hidden>
+          <span className="plate-numeral">{toRoman(index + 1)}</span>
+        </div>
+      )}
       <img
         src={work.image}
         alt={work.title}
         loading={index > 3 ? 'lazy' : 'eager'}
         onLoad={() => setLoaded(true)}
-        className={`h-full w-full object-cover transition-all duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06] ${
-          loaded ? 'opacity-100 blur-0' : 'opacity-0 blur-md'
+        className={`h-full w-full object-cover transition-[opacity,transform] duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06] ${
+          loaded ? 'opacity-100' : 'opacity-0'
         }`}
         draggable={false}
       />

@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -53,16 +53,25 @@ function Particles({ count = 700 }: { count?: number }) {
 }
 
 export default function DustField({ className = '' }: { className?: string }) {
+  const root = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(true)
+
+  // pause the render loop while the hero is scrolled out of view
+  useEffect(() => {
+    const el = root.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   return (
-    <div
-      className={`pointer-events-none absolute inset-0 ${className}`}
-      onMouseMove={() => {}}
-      aria-hidden
-    >
+    <div ref={root} className={`pointer-events-none absolute inset-0 ${className}`} aria-hidden>
       <Canvas
         camera={{ position: [0, 0, 9], fov: 55 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
+        frameloop={active ? 'always' : 'never'}
         style={{ background: 'transparent' }}
       >
         <Particles />

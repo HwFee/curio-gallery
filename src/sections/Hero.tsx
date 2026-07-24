@@ -1,7 +1,9 @@
-import { useLayoutEffect, useRef } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import DustField from '@/components/gallery/DustField'
 import type { Work } from '@/types/work'
+
+// three.js is heavy — load the dust canvas after first paint
+const DustField = lazy(() => import('@/components/gallery/DustField'))
 
 export default function Hero({ featured, onOpen }: { featured: Work; onOpen: (el: HTMLElement) => void }) {
   const root = useRef<HTMLElement>(null)
@@ -43,7 +45,9 @@ export default function Hero({ featured, onOpen }: { featured: Work; onOpen: (el
 
   return (
     <section ref={root} className="vignette relative flex h-[100svh] items-center justify-center overflow-hidden">
-      <DustField />
+      <Suspense fallback={null}>
+        <DustField />
+      </Suspense>
 
       {/* colossal word behind the frame */}
       <h1

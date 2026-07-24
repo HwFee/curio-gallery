@@ -4,6 +4,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+// mobile URL-bar show/hide changes viewport height constantly; don't recompute pins for it
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 let lenis: Lenis | null = null
 

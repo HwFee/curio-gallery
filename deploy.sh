@@ -73,7 +73,9 @@ if [ -n "$DOMAIN" ]; then
 $DOMAIN {
     root * $INSTALL_DIR/dist
     file_server
-    encode gzip
+    encode zstd gzip
+    @immutable path /assets/* /gallery/*
+    header @immutable Cache-Control "public, max-age=31536000, immutable"
     try_files {path} /index.html
 }
 EOF
@@ -82,7 +84,9 @@ else
 :$PORT {
     root * $INSTALL_DIR/dist
     file_server
-    encode gzip
+    encode zstd gzip
+    @immutable path /assets/* /gallery/*
+    header @immutable Cache-Control "public, max-age=31536000, immutable"
     try_files {path} /index.html
 }
 EOF
