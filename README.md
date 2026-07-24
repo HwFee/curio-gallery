@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# Curio Gallery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+个人图片画廊，基于 React + Vite + Tailwind CSS。
 
-Currently, two official plugins are available:
+## 一键部署到境外 VPS
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**注意**：本站包含成人向图片，请使用境外服务器部署，不要部署在中国大陆或香港主机上。
 
-## React Compiler
+### 方式一：直接 curl 执行（推荐）
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+在境外 VPS 上以 root 执行：
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | bash
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+默认监听 `80` 端口，访问 `http://<服务器IP>` 即可。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 方式二：clone 后执行
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/HwFee/curio-gallery.git
+cd curio-gallery
+sudo bash deploy.sh
+```
+
+### 使用自定义域名 + HTTPS
+
+设置环境变量后执行脚本：
+
+```bash
+export DOMAIN=gallery.example.com
+curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | bash
+```
+
+Caddy 会自动申请并续期 Let's Encrypt 证书。
+
+### 使用非 80 端口
+
+```bash
+export PORT=8080
+curl -fsSL https://raw.githubusercontent.com/HwFee/curio-gallery/main/deploy.sh | bash
+```
+
+## 关于成人向图片
+
+GitHub 禁止在仓库中托管色情内容，因此本仓库的源码**不包含**以下两张成人向图片：
+
+- `public/gallery/fallen-feathers.jpg`
+- `public/gallery/velvet-repose.png`
+- 对应数据文件 `src/data/works/fallen-feathers.json`、`src/data/works/velvet-repose.json`
+
+如果你想在自建服务器上展示完整画廊，请把上述文件手动上传到服务器的 `/var/www/curio-gallery/public/gallery/` 和 `/var/www/curio-gallery/src/data/works/`，然后在服务器上运行：
+
+```bash
+cd /var/www/curio-gallery
+pnpm run build
+systemctl restart caddy
+```
+
+## 本地开发
+
+```bash
+pnpm install
+pnpm dev
+```
+
+```bash
+pnpm run build
 ```
