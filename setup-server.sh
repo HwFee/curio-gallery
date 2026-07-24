@@ -43,6 +43,13 @@ $DOMAIN {
     encode gzip
     try_files {path} /index.html
 }
+
+:80 {
+    root * $INSTALL_DIR/dist
+    file_server
+    encode gzip
+    try_files {path} /index.html
+}
 EOF
 else
   cat > /etc/caddy/Caddyfile <<EOF
